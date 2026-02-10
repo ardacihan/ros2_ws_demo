@@ -1,0 +1,12 @@
+services:
+  ros2_image_processor:
+    build: .
+    container_name: ros2_image_processor
+    privileged: true  # For camera access
+    devices:
+      - /dev/video0:/dev/video0
+    volumes:
+      - ./captured_images:/ros2_ws/captured_images
+    network_mode: host  # For ROS2 communication
+    tty: true
+    stdin_open: true

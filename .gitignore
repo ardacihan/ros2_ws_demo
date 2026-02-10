@@ -1,0 +1,7 @@
+# Captured images output
+output/
+build/
+install/
+log/
+.vscode/
+*.log
