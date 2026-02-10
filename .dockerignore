@@ -1,28 +1,13 @@
-# Ignore captured images
-captured_images/
-
-# Python cache
+# .dockerignore
+build/
+install/
+log/
+output/*
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-
-# ROS2 build artifacts
-build/
-install/
-log/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Git
-.git/
-.gitignore
-
-# OS
-.DS_Store
-Thumbs.db
+env/
+venv/
+.venv/

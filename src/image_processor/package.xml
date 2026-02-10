@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>image_processor</name>
+  <version>1.0.0</version>
+  <description>Simple ROS2 environment to demonstrate publisher/subscriber using image processing</description>
+  <maintainer email="ardacihan7452@gmail.com">arda</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

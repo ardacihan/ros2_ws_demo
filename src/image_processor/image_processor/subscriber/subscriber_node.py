@@ -13,34 +13,35 @@ import shutil
 class ImageSubscriber(Node):
 
     def __init__(self):
-        super().__init__('image_subscriber')
-        
-        self.get_logger().info('Initializing image subscriber...')
-        
-        self.subscription = self.create_subscription(
-            Image,
-            'camera/image_raw',
-            self.listener_callback,
-            10)
-        
-        self.bridge = CvBridge()
-        self.frame_count = 1000
-        
-        self.output_root = 'output'
-        self.images_dir = os.path.join(self.output_root, 'images')
-        self.meta_dir = os.path.join(self.output_root, 'metafiles')
+            super().__init__('image_subscriber')
+            
+            self.get_logger().info('Initializing image subscriber...')
+            
+            self.subscription = self.create_subscription(
+                Image,
+                'camera/image_raw',
+                self.listener_callback,
+                10)
+            
+            self.bridge = CvBridge()
+            self.frame_count = 1000
+            
+            self.output_root = 'output'
+            self.images_dir = os.path.join(self.output_root, 'images')
+            self.meta_dir = os.path.join(self.output_root, 'metafiles')
 
-        # Remove previous output folder completely
-        if os.path.exists(self.output_root):
-            self.get_logger().info(f'Clearing existing directory: {self.output_root}')
-            shutil.rmtree(self.output_root)
+            # FIX: Do NOT delete 'self.output_root' (it is a Docker mount point)
+            # Instead, clear the sub-directories if they exist
+            for sub_dir in [self.images_dir, self.meta_dir]:
+                if os.path.exists(sub_dir):
+                    self.get_logger().info(f'Clearing directory: {sub_dir}')
+                    shutil.rmtree(sub_dir)
 
-        os.makedirs(self.images_dir, exist_ok=True)
-        os.makedirs(self.meta_dir, exist_ok=True)
+            # Re-create sub-directories
+            os.makedirs(self.images_dir, exist_ok=True)
+            os.makedirs(self.meta_dir, exist_ok=True)
 
-        self.get_logger().info('Image subscriber started.')
-        self.get_logger().info(f'Saving images to: {os.path.abspath(self.images_dir)}')
-        self.get_logger().info(f'Saving metadata to: {os.path.abspath(self.meta_dir)}')
+            self.get_logger().info('Image subscriber started.')
 
     def listener_callback(self, msg):
         receive_time = self.get_clock().now()

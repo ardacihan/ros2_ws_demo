@@ -1,6 +1,6 @@
-FROM ros:humble-ros-core
+FROM ros:humble-ros-base
 
-# Install all dependencies in one layer
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-colcon-common-extensions \
@@ -8,30 +8,22 @@ RUN apt-get update && apt-get install -y \
     python3-numpy \
     ros-humble-cv-bridge \
     ros-humble-image-transport \
-    ros-humble-launch \
-    v4l-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Create workspace directory
-WORKDIR /ros2_ws/src
-
-# Copy the ROS2 package
-COPY image_processor ./image_processor
-
-# Build the package
-WORKDIR /ros2_ws
-RUN . /opt/ros/humble/setup.sh && \
-    colcon build --symlink-install
-
-# Create a simple startup script
-RUN echo '#!/bin/bash\n\
-source /opt/ros/humble/setup.bash\n\
-source /ros2_ws/install/setup.bash\n\
-exec "$@"' > /startup.sh && \
-    chmod +x /startup.sh
-
+# Create workspace
 WORKDIR /ros2_ws
 
-# Default to interactive bash with environment sourced
-ENTRYPOINT ["/startup.sh"]
-CMD ["bash"]
+# Copy source code
+COPY src/ ./src/
+
+# Build the workspace
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build"
+
+RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
+RUN echo "source /ros2_ws/install/setup.bash" >> /root/.bashrc
+
+# Set up the entrypoint to source both ROS and our workspace automatically
+ENTRYPOINT ["bash", "-c", "source /opt/ros/humble/setup.bash && source /ros2_ws/install/setup.bash && \"$@\"", "--"]
+
+# Default command to launch the nodes
+CMD ["ros2", "launch", "image_processor", "start_all.launch.py"]
