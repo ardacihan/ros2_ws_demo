@@ -6,7 +6,7 @@ package_name = 'image_processor'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=[package_name, f'{package_name}.publisher', f'{package_name}.subscriber'],
     data_files=[
         ('share/ament_index/resource_index/packages', [f'resource/{package_name}']),

@@ -51,6 +51,3 @@ All results are saved to the `./output` folder:
 - Images: ./output/images/
 - Metadata: ./output/metafiles/
 
-### .gitignore
-Place this file in your project root to avoid committing unnecessary files:
-
