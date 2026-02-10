@@ -5,28 +5,45 @@ This repository contains a distributed ROS 2 system with two nodes: a Publisher 
 
 ### Installation
 1. Clone the repository:
-git clone <your-repo-url>
+```
+git clone https://github.com/ardacihan/ros2_ws_demo.git
+```
+```
 cd planblue_ros2_ws
+```
 
 2. Build the Docker image:
+
+```
 docker-compose build
+```
 
 ### Execution
 
 #### Option 1: Run everything in one terminal
+```
 docker-compose up
+```
 
 This will launch both the publisher and subscriber automatically.
 
 #### Option 2: Run nodes in separate terminals
 
 Terminal 1 (Publisher):
+```
 docker-compose run --name ros_dev ros2 bash
+```
+```
 ros2 run image_processor image_publisher
+```
 
 Terminal 2 (Subscriber):
+```
 docker exec -it ros_dev bash
+```
+```
 ros2 run image_processor image_listener
+```
 
 ### Output
 All results are saved to the `./output` folder:
