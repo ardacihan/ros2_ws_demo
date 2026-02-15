@@ -9,7 +9,7 @@ This repository contains a distributed ROS 2 system with two nodes: a Publisher 
 git clone https://github.com/ardacihan/ros2_ws_demo.git
 ```
 ```
-cd planblue_ros2_ws
+cd ros_ws_demo
 ```
 
 2. Build the Docker image:
